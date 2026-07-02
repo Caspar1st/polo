@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import ClubCrest from "@/components/shared/ClubCrest";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home" },
@@ -13,18 +14,6 @@ const NAV_ITEMS = [
   { href: "/news", label: "News" },
   { href: "/account", label: "Account" },
 ] as const;
-
-function CrestMark({ className = "" }: { className?: string }) {
-  /* Placeholder monogram until the official FPC crest asset is supplied. */
-  return (
-    <span
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-full border border-accent-400 bg-primary-800 text-sm tracking-tight text-accent-200 ${className}`}
-      aria-hidden
-    >
-      FPC
-    </span>
-  );
-}
 
 export function SiteNav() {
   const pathname = usePathname();
@@ -41,7 +30,7 @@ export function SiteNav() {
           className="flex items-center gap-3"
           onClick={() => setOpen(false)}
         >
-          <CrestMark />
+          <ClubCrest size={44} />
           <span className="leading-tight">
             <span className="block text-lg text-primary-900">
               Frankfurter Polo Club
