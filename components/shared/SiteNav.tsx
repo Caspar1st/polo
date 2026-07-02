@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import ClubCrest from "@/components/shared/ClubCrest";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home" },
@@ -30,7 +30,14 @@ export function SiteNav() {
           className="flex items-center gap-3"
           onClick={() => setOpen(false)}
         >
-          <ClubCrest size={44} />
+          <Image
+            src="/fpc-crest.png"
+            alt=""
+            width={44}
+            height={42}
+            priority
+            className="h-11 w-auto"
+          />
           <span className="leading-tight">
             <span className="block text-lg text-primary-900">
               Frankfurter Polo Club

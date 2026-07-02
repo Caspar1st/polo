@@ -33,9 +33,9 @@ Other scripts: `npm run lint` · `npm run typecheck` · `npm run build`.
 - **Typography:** Times New Roman first, with Georgia/Liberation Serif
   fallbacks (system fonts — no webfont embedding/licensing needed).
 - **Palette:** deep racing green (`primary`), cream/ivory (`surface`),
-  brass/gold (`accent`). Tokens live in `app/globals.css`.
-  ⚠️ Exact hex values are placeholders until sampled from the official FPC
-  crest artwork.
+  brass/gold (`accent`). Tokens live in `app/globals.css`. The official
+  crest (`public/fpc-crest.png`, from frankfurterpoloclub.de) is
+  black &amp; white, so the palette is a brand choice, not sampled.
 - **Signature motif:** `components/shared/PoloPonyLoader.tsx` — an animated
   galloping pony used for *every* loading state, empty state, and as a hero
   watermark. Never add an ad-hoc spinner; use the pony
