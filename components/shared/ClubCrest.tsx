@@ -1,17 +1,17 @@
 import { useId } from "react";
 
 /**
- * ClubCrest — heraldic club seal.
+ * ClubCrest — full heraldic achievement in the style of the Royal Arms:
+ * a crown above a quartered shield, two rearing horse supporters, a grass
+ * compartment, and a motto scroll with "VIRTUS IN EQUIS" ("excellence lies
+ * in horses").
  *
- * Circular "old money" crest: brass double ring, curved club name, the
- * galloping-pony silhouette (same drawing as PoloPonyLoader, so the motif
- * is consistent) over crossed polo mallets, MCMII founding year, and the
- * Latin motto "VIRTUS IN EQUIS" — "excellence lies in horses" — on the
- * lower band.
+ * Shield quarters: I crossed polo mallets · II the club's galloping pony
+ * (same drawing as PoloPonyLoader) · III three polo balls · IV a horseshoe.
  *
  * Colors read from the design tokens with hardcoded fallbacks so the crest
- * also renders correctly outside the app stylesheet (e.g. in OG images).
- * app/icon.svg carries the same artwork as a static file for the favicon.
+ * also renders correctly outside the app stylesheet. app/icon.svg carries
+ * the same artwork as a static file for the favicon.
  */
 export interface ClubCrestProps {
   /** Rendered width/height in px. */
@@ -26,10 +26,26 @@ const GOLD_LIGHT = "var(--color-accent-300, #d7bc74)";
 const IVORY = "var(--color-accent-100, #f3ead2)";
 const GREEN = "var(--color-primary-800, #1b3626)";
 
+/** Rearing (rampant) horse supporter, drawn facing right in a 60×96 box. */
+function Supporter() {
+  return (
+    <g fill={GOLD}>
+      <path d="M 50 10 C 55 12, 56 18, 51 21 L 45 19 C 43 30, 38 38, 33 45 C 30 53, 27 61, 25 68 C 22 75, 15 77, 11 72 C 6 67, 6 59, 10 53 C 13 43, 19 33, 26 25 C 32 18, 38 13, 43 8 C 46 4, 49 6, 50 10 Z" />
+      <path d="M 42 9 L 44 1 L 48 7 Z" />
+      <path d="M 10 56 C 4 63, 2 73, 5 85 C 6 88, 10 87, 9 83 C 7 73, 9 64, 13 60 Z" />
+      <g stroke={GOLD} strokeWidth="5" strokeLinecap="round" fill="none">
+        <path d="M 33 41 C 41 37, 48 32, 54 26" />
+        <path d="M 31 48 C 38 46, 44 48, 50 53" />
+        <path d="M 14 70 C 13 79, 12 87, 13 95" />
+        <path d="M 21 73 C 22 81, 24 88, 27 95" />
+      </g>
+    </g>
+  );
+}
+
 export function ClubCrest({ size = 44, className, label }: ClubCrestProps) {
   const id = useId();
-  const topArc = `${id}-top`;
-  const bottomArc = `${id}-bottom`;
+  const shieldClip = `${id}-shield`;
 
   return (
     <svg
@@ -42,76 +58,114 @@ export function ClubCrest({ size = 44, className, label }: ClubCrestProps) {
       aria-hidden={label ? undefined : true}
     >
       <defs>
-        {/* Baselines for the curved band lettering */}
-        <path id={topArc} d="M 32 120 A 88 88 0 0 1 208 120" fill="none" />
-        <path id={bottomArc} d="M 26 120 A 94 94 0 0 0 214 120" fill="none" />
+        <clipPath id={shieldClip}>
+          <path d="M 84 58 L 156 58 L 156 108 C 156 130, 140 144, 120 152 C 100 144, 84 130, 84 108 Z" />
+        </clipPath>
       </defs>
 
-      {/* Field and rings */}
-      <circle cx="120" cy="120" r="116" fill={GREEN} stroke={GOLD} strokeWidth="7" />
-      <circle cx="120" cy="120" r="104" fill="none" stroke={GOLD} strokeWidth="1.5" />
-      <circle cx="120" cy="120" r="78" fill="none" stroke={GOLD} strokeWidth="1.5" />
-
-      {/* Band lettering */}
-      <text
-        fontFamily='"Times New Roman", Georgia, serif'
-        fontSize="15"
-        letterSpacing="2.5"
-        fill={GOLD_LIGHT}
-      >
-        <textPath href={`#${topArc}`} startOffset="50%" textAnchor="middle">
-          FRANKFURTER POLO CLUB
-        </textPath>
-      </text>
-      <text
-        fontFamily='"Times New Roman", Georgia, serif'
-        fontSize="15"
-        letterSpacing="3"
-        fill={GOLD_LIGHT}
-      >
-        <textPath href={`#${bottomArc}`} startOffset="50%" textAnchor="middle">
-          VIRTUS IN EQUIS
-        </textPath>
-      </text>
-
-      {/* Band separators */}
-      <path d="M 29 115.5 L 31.6 117.4 L 33.5 120 L 31.6 122.6 L 29 124.5 L 26.4 122.6 L 24.5 120 L 26.4 117.4 Z" fill={GOLD} />
-      <path d="M 211 115.5 L 213.6 117.4 L 215.5 120 L 213.6 122.6 L 211 124.5 L 208.4 122.6 L 206.5 120 L 208.4 117.4 Z" fill={GOLD} />
-
-      {/* Crossed polo mallets behind the pony */}
-      <g stroke={GOLD} strokeWidth="4.5" strokeLinecap="round">
-        <g transform="translate(120 112) rotate(26)">
-          <line x1="0" y1="-64" x2="0" y2="52" />
-          <rect x="-11" y="52" width="22" height="11" rx="5.5" fill={GOLD} stroke="none" />
-        </g>
-        <g transform="translate(120 112) rotate(-26)">
-          <line x1="0" y1="-64" x2="0" y2="52" />
-          <rect x="-11" y="52" width="22" height="11" rx="5.5" fill={GOLD} stroke="none" />
-        </g>
+      {/* Crown */}
+      <g fill={GOLD}>
+        <path d="M 96 54 L 96 44 L 104 47 L 111 32 L 118 44 L 120 28 L 122 44 L 129 32 L 136 47 L 144 44 L 144 54 Z" />
+        <circle cx="111" cy="29" r="2.2" fill={GOLD_LIGHT} />
+        <circle cx="129" cy="29" r="2.2" fill={GOLD_LIGHT} />
+        <circle cx="120" cy="25" r="2.6" />
+        <path d="M 120 13 V 21 M 116.5 17 H 123.5" stroke={GOLD} strokeWidth="2" fill="none" />
       </g>
 
-      {/* Galloping pony — same silhouette as PoloPonyLoader */}
-      <g transform="translate(120 112) scale(0.63) translate(-120 -70)" fill={IVORY}>
-        <path d="M60 56 C 48 52, 38 44, 33 32 C 32 30, 35 28, 37 30 C 43 40, 52 48, 63 51 Z" />
-        <path d="M199 51 C 206 54, 207 62, 200 64 L 187 62 C 178 74, 167 80, 153 83 C 149 92, 141 96, 133 94 L 98 92 C 90 98, 80 98, 75 90 C 63 88, 56 78, 58 65 C 58 56, 62 49, 70 46 C 84 41, 102 40, 116 44 C 130 48, 145 44, 158 39 C 169 35, 178 33, 184 37 C 192 34, 197 43, 199 51 Z" />
-        <path d="M179 34 L 184 22 L 189 33 Z" />
-        <g stroke={IVORY} strokeWidth="7" strokeLinecap="round" fill="none">
-          <path d="M142 86 C 152 96, 164 103, 177 106" />
-          <path d="M132 88 C 135 101, 130 112, 121 119" />
-          <path d="M78 84 C 67 95, 55 102, 43 105" />
-          <path d="M86 86 C 87 100, 93 111, 102 118" />
-        </g>
+      {/* Supporters — two horses rampant */}
+      <g transform="translate(36 52)">
+        <Supporter />
       </g>
+      <g transform="translate(204 52) scale(-1 1)">
+        <Supporter />
+      </g>
+
+      {/* Quartered shield */}
+      <g clipPath={`url(#${shieldClip})`}>
+        <rect x="84" y="58" width="36" height="47" fill={GREEN} />
+        <rect x="120" y="58" width="36" height="47" fill={IVORY} />
+        <rect x="84" y="105" width="36" height="47" fill={IVORY} />
+        <rect x="120" y="105" width="36" height="47" fill={GREEN} />
+
+        {/* Q1 — crossed polo mallets */}
+        <g transform="translate(102 81)" stroke={GOLD} strokeWidth="2.8" strokeLinecap="round">
+          <g transform="rotate(28)">
+            <line x1="0" y1="-16" x2="0" y2="12" />
+            <rect x="-4.5" y="12" width="9" height="5" rx="2.5" fill={GOLD} stroke="none" />
+          </g>
+          <g transform="rotate(-28)">
+            <line x1="0" y1="-16" x2="0" y2="12" />
+            <rect x="-4.5" y="12" width="9" height="5" rx="2.5" fill={GOLD} stroke="none" />
+          </g>
+        </g>
+
+        {/* Q2 — galloping pony (shared motif) */}
+        <g transform="translate(138 81) scale(0.17) translate(-120 -70)" fill={GREEN}>
+          <path d="M60 56 C 48 52, 38 44, 33 32 C 32 30, 35 28, 37 30 C 43 40, 52 48, 63 51 Z" />
+          <path d="M199 51 C 206 54, 207 62, 200 64 L 187 62 C 178 74, 167 80, 153 83 C 149 92, 141 96, 133 94 L 98 92 C 90 98, 80 98, 75 90 C 63 88, 56 78, 58 65 C 58 56, 62 49, 70 46 C 84 41, 102 40, 116 44 C 130 48, 145 44, 158 39 C 169 35, 178 33, 184 37 C 192 34, 197 43, 199 51 Z" />
+          <path d="M179 34 L 184 22 L 189 33 Z" />
+          <g stroke={GREEN} strokeWidth="7" strokeLinecap="round" fill="none">
+            <path d="M142 86 C 152 96, 164 103, 177 106" />
+            <path d="M132 88 C 135 101, 130 112, 121 119" />
+            <path d="M78 84 C 67 95, 55 102, 43 105" />
+            <path d="M86 86 C 87 100, 93 111, 102 118" />
+          </g>
+        </g>
+
+        {/* Q3 — three polo balls */}
+        <circle cx="93.5" cy="118" r="4.2" fill={GREEN} />
+        <circle cx="110.5" cy="118" r="4.2" fill={GREEN} />
+        <circle cx="102" cy="131" r="4.2" fill={GREEN} />
+
+        {/* Q4 — horseshoe */}
+        <path d="M 129 115 A 11 11 0 1 0 147 115" stroke={GOLD} strokeWidth="4" strokeLinecap="round" fill="none" />
+
+        {/* Quarter lines */}
+        <path d="M 120 58 V 152 M 84 105 H 156" stroke={GOLD} strokeWidth="1.5" fill="none" />
+      </g>
+      {/* Shield outline */}
+      <path
+        d="M 84 58 L 156 58 L 156 108 C 156 130, 140 144, 120 152 C 100 144, 84 130, 84 108 Z"
+        fill="none"
+        stroke={GOLD}
+        strokeWidth="3"
+      />
+
+      {/* Compartment — grass mound */}
+      <path
+        d="M 38 156 C 72 146, 168 146, 202 156 C 168 164, 72 164, 38 156 Z"
+        fill={GREEN}
+        stroke={GOLD}
+        strokeWidth="1.5"
+      />
+
+      {/* Motto scroll */}
+      <g stroke={GOLD} strokeWidth="1.5" fill={IVORY}>
+        <path d="M 60 170 L 42 168 L 48 178 L 43 188 L 62 187 Z" />
+        <path d="M 180 170 L 198 168 L 192 178 L 197 188 L 178 187 Z" />
+        <path d="M 60 170 C 92 163, 148 163, 180 170 L 178 187 C 148 180, 92 180, 62 187 Z" />
+      </g>
+      <text
+        x="120"
+        y="179.5"
+        fontFamily='"Times New Roman", Georgia, serif'
+        fontSize="11.5"
+        letterSpacing="1.2"
+        textAnchor="middle"
+        fill={GREEN}
+      >
+        VIRTUS IN EQUIS
+      </text>
 
       {/* Founding year */}
       <text
         x="120"
-        y="184"
+        y="204"
         fontFamily='"Times New Roman", Georgia, serif'
-        fontSize="12"
+        fontSize="10.5"
         letterSpacing="4"
         textAnchor="middle"
-        fill={GOLD_LIGHT}
+        fill={GOLD}
       >
         MCMII
       </text>
