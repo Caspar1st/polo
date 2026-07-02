@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+/*
+ * Frankfurter Polo Club — design tokens
+ * "Quiet luxury" equestrian members' club: deep racing green, ivory,
+ * brass/gold accents, Times New Roman editorial typography.
+ *
+ * TODO(design): the exact primary/accent hex values should be sampled from
+ * the official FPC crest artwork before launch. The values below are
+ * placeholders in the correct family (racing green / brass).
+ */
+@theme {
+  /* Primary — deep racing green */
+  --color-primary-50: #f0f5f1;
+  --color-primary-100: #dce8df;
+  --color-primary-200: #b6d0bd;
+  --color-primary-300: #8bb297;
+  --color-primary-400: #5c8e6d;
+  --color-primary-500: #3c6e4f;
+  --color-primary-600: #2b573c;
+  --color-primary-700: #22452f;
+  --color-primary-800: #1b3626;
+  --color-primary-900: #142a1d;
+  --color-primary-950: #0b1a11;
+  --color-primary: #1b3626;
+
+  /* Accent — brass / old gold, for CTAs and active states */
+  --color-accent-50: #faf6ec;
+  --color-accent-100: #f3ead2;
+  --color-accent-200: #e6d5a5;
+  --color-accent-300: #d7bc74;
+  --color-accent-400: #c9a651;
+  --color-accent-500: #b08d3e;
+  --color-accent-600: #97742f;
+  --color-accent-700: #7a5c28;
+  --color-accent-800: #5f4722;
+  --color-accent-900: #4a381d;
+  --color-accent: #b08d3e;
+
+  /* Surfaces — cream / ivory */
+  --color-surface: #f7f3e8;
+  --color-surface-raised: #fdfbf4;
+  --color-surface-sunken: #efe9d8;
+
+  /* Ink — warm near-black for body copy */
+  --color-ink: #211d16;
+  --color-ink-muted: #5d564a;
+  --color-ink-faint: #8a8171;
+
+  /* Typography — Times New Roman editorial identity with safe fallbacks.
+     No @font-face: Times New Roman is a system font everywhere that
+     matters; Georgia / Liberation Serif cover the rest. */
+  --font-serif: "Times New Roman", Georgia, "Liberation Serif", "Nimbus Roman", serif;
+  --font-sans: var(--font-serif);
+
+  /* Motion */
+  --ease-club: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-surface text-ink font-serif antialiased;
+}
+
+::selection {
+  background: var(--color-accent-200);
+  color: var(--color-primary-900);
+}
+
+/* ---------------------------------------------------------------------------
+ * PoloPonyLoader keyframes
+ * The pony is the club's signature motif — used for every loading state,
+ * empty state, and as a hero watermark. Animations are pure CSS so the
+ * component stays a lightweight server component; speed is driven by the
+ * --pony-duration custom property set from the `speed` prop.
+ * ------------------------------------------------------------------------- */
+
+@keyframes pony-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0.6deg);
+  }
+  50% {
+    transform: translateY(-4.5px) rotate(-1.4deg);
+  }
+}
+
+@keyframes pony-leg-fore {
+  0%,
+  100% {
+    transform: rotate(16deg);
+  }
+  50% {
+    transform: rotate(-20deg);
+  }
+}
+
+@keyframes pony-leg-fore-b {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(22deg);
+  }
+}
+
+@keyframes pony-leg-hind {
+  0%,
+  100% {
+    transform: rotate(-16deg);
+  }
+  50% {
+    transform: rotate(18deg);
+  }
+}
+
+@keyframes pony-leg-hind-b {
+  0%,
+  100% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(-20deg);
+  }
+}
+
+@keyframes pony-tail {
+  0%,
+  100% {
+    transform: rotate(4deg);
+  }
+  50% {
+    transform: rotate(-6deg);
+  }
+}
+
+@keyframes pony-ground {
+  to {
+    stroke-dashoffset: -64;
+  }
+}
+
+.pony-bob {
+  animation: pony-bob var(--pony-duration, 0.7s) ease-in-out infinite;
+  transform-box: view-box;
+  transform-origin: 110px 70px;
+}
+
+.pony-leg {
+  transform-box: view-box;
+  animation-duration: var(--pony-duration, 0.7s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.pony-leg-fore {
+  animation-name: pony-leg-fore;
+  transform-origin: 142px 86px;
+}
+
+.pony-leg-fore-b {
+  animation-name: pony-leg-fore-b;
+  transform-origin: 132px 88px;
+}
+
+.pony-leg-hind {
+  animation-name: pony-leg-hind;
+  transform-origin: 78px 84px;
+}
+
+.pony-leg-hind-b {
+  animation-name: pony-leg-hind-b;
+  transform-origin: 86px 86px;
+}
+
+.pony-tail {
+  animation: pony-tail var(--pony-duration, 0.7s) ease-in-out infinite;
+  transform-box: view-box;
+  transform-origin: 58px 58px;
+}
+
+.pony-ground {
+  stroke-dasharray: 22 42;
+  animation: pony-ground calc(var(--pony-duration, 0.7s) * 0.85) linear infinite;
+}
+
+/* Respect users who prefer reduced motion: freeze the gallop. */
+@media (prefers-reduced-motion: reduce) {
+  .pony-bob,
+  .pony-leg,
+  .pony-tail,
+  .pony-ground {
+    animation: none;
+  }
+}

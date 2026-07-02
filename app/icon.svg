@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Placeholder favicon until the official FPC crest artwork is supplied -->
+  <circle cx="32" cy="32" r="30" fill="#1b3626" stroke="#b08d3e" stroke-width="3"/>
+  <text x="32" y="41" font-family="Times New Roman, Georgia, serif" font-size="22" fill="#f3ead2" text-anchor="middle">FPC</text>
+</svg>
