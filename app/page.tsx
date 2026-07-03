@@ -1,15 +1,18 @@
 import Link from "next/link";
 import PoloPonyLoader from "@/components/shared/PoloPonyLoader";
+import IsometricGrounds from "@/components/shared/IsometricGrounds";
+import HeroPoloRider from "@/components/shared/HeroPoloRider";
 
 /*
- * Home — Milestone 1 shell.
- *
- * The hero placeholder below will be replaced by the 3D grounds render
- * (Google Maps Platform Photorealistic 3D Tiles behind a feature flag,
- * with a retouched static aerial as fallback) in a later milestone — see
- * the project brief §3a. Do NOT attempt runtime masking of real-world
- * objects (power poles/lines) in the live tile stream; use a baked,
- * retouched asset or a custom 3D model instead.
+ * Home — hero with the illustrated isometric Georgshof grounds
+ * (Oeserstraße 80): IsometricGrounds as the ground plane, HeroPoloRider
+ * cantering across it. NEXT_PUBLIC_FEATURE_3D_HERO (see .env.example)
+ * remains reserved for the live Google Photorealistic 3D Tiles viewer per
+ * README §3a — when that ships, it replaces the illustration behind the
+ * flag, exactly as it would have replaced the old static placeholder.
+ * Do NOT attempt runtime masking of real-world objects (power poles/
+ * lines) in a live tile stream; the illustration sidesteps this by
+ * containing no poles or overhead wiring at all.
  */
 
 const UPCOMING = [
@@ -66,14 +69,13 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        {/* 3D grounds render placeholder (feature-flagged in a later milestone) */}
+        {/* Illustrated Georgshof grounds (default visual behind the
+            NEXT_PUBLIC_FEATURE_3D_HERO flag — see file header comment) */}
         <div className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-          <div className="flex aspect-[21/9] items-center justify-center rounded-md border border-surface/15 bg-primary-800/60">
-            <div className="text-center text-surface/60">
-              <PoloPonyLoader variant="inline" size={90} color="currentColor" />
-              <p className="mt-2 text-sm tracking-widest uppercase">
-                3D grounds view — coming soon
-              </p>
+          <div className="relative overflow-hidden rounded-md border border-surface/15 bg-primary-800/60">
+            <IsometricGrounds className="h-auto w-full" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-[31%]">
+              <HeroPoloRider className="w-[15%] min-w-20 text-accent-200" />
             </div>
           </div>
         </div>
