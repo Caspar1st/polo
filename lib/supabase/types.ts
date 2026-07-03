@@ -5,6 +5,15 @@
  */
 
 export type MembershipType = "full" | "junior" | "guest";
+export type ResourceType =
+  | "hall"
+  | "field1"
+  | "field2"
+  | "field3"
+  | "lesson"
+  | "event";
+export type BookingStatus = "pending" | "confirmed" | "cancelled";
+export type LessonType = "private" | "group";
 
 export interface Database {
   public: {
@@ -41,15 +50,145 @@ export interface Database {
         };
         Relationships: [];
       };
+      bookings: {
+        Row: {
+          id: string;
+          user_id: string;
+          resource: ResourceType;
+          starts_at: string;
+          ends_at: string;
+          status: BookingStatus;
+          notes: string | null;
+          price_cents: number;
+          trainer_id: string | null;
+          lesson_type: LessonType | null;
+          event_id: string | null;
+          ticket_count: number | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          resource: ResourceType;
+          starts_at: string;
+          ends_at: string;
+          status?: BookingStatus;
+          notes?: string | null;
+          price_cents?: number;
+          trainer_id?: string | null;
+          lesson_type?: LessonType | null;
+          event_id?: string | null;
+          ticket_count?: number | null;
+        };
+        Update: {
+          status?: BookingStatus;
+          notes?: string | null;
+        };
+        Relationships: [];
+      };
+      trainers: {
+        Row: {
+          id: string;
+          name: string;
+          bio: string | null;
+          active: boolean;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          bio?: string | null;
+          active?: boolean;
+        };
+        Update: {
+          name?: string;
+          bio?: string | null;
+          active?: boolean;
+        };
+        Relationships: [];
+      };
+      club_events: {
+        Row: {
+          id: string;
+          title: string;
+          description: string | null;
+          starts_at: string;
+          ends_at: string;
+          ticket_price_cents: number;
+          capacity: number | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          description?: string | null;
+          starts_at: string;
+          ends_at: string;
+          ticket_price_cents?: number;
+          capacity?: number | null;
+        };
+        Update: {
+          title?: string;
+          description?: string | null;
+          starts_at?: string;
+          ends_at?: string;
+          ticket_price_cents?: number;
+          capacity?: number | null;
+        };
+        Relationships: [];
+      };
+      rates: {
+        Row: {
+          key: string;
+          per_hour_cents: number;
+        };
+        Insert: {
+          key: string;
+          per_hour_cents: number;
+        };
+        Update: {
+          per_hour_cents?: number;
+        };
+        Relationships: [];
+      };
+      club_settings: {
+        Row: {
+          id: boolean;
+          cancellation_hours: number;
+        };
+        Insert: {
+          id?: boolean;
+          cancellation_hours?: number;
+        };
+        Update: {
+          cancellation_hours?: number;
+        };
+        Relationships: [];
+      };
     };
     Views: {
-      [_ in never]: never;
+      busy_slots: {
+        Row: {
+          id: string;
+          resource: ResourceType;
+          trainer_id: string | null;
+          starts_at: string;
+          ends_at: string;
+        };
+        Relationships: [];
+      };
     };
     Functions: {
-      [_ in never]: never;
+      cancel_booking: {
+        Args: { booking_id: string };
+        Returns: undefined;
+      };
     };
     Enums: {
       membership_type: MembershipType;
+      resource_type: ResourceType;
+      booking_status: BookingStatus;
+      lesson_type: LessonType;
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -59,6 +198,10 @@ export interface Database {
 
 export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 export type ProfileUpdate = Database["public"]["Tables"]["profiles"]["Update"];
+export type Booking = Database["public"]["Tables"]["bookings"]["Row"];
+export type Trainer = Database["public"]["Tables"]["trainers"]["Row"];
+export type ClubEvent = Database["public"]["Tables"]["club_events"]["Row"];
+export type BusySlot = Database["public"]["Views"]["busy_slots"]["Row"];
 
 export const MEMBERSHIP_LABELS: Record<MembershipType, string> = {
   full: "Full member",

@@ -80,7 +80,14 @@ cannot change their own membership tier — that's service-role only).
 
 1. ✅ Repo scaffold, design tokens, `PoloPonyLoader`, app shell/nav
 2. ✅ Supabase Auth (Apple + email) + account model + DSGVO self-service
-3. Shared calendar/booking engine across hall, 3 fields, lessons, events
+3. ✅ Shared calendar/booking engine across hall, 3 fields, lessons, events
+   — one `bookings` table with `resource_type`, DB-level exclusion
+   constraints against double-booking (plus a capacity trigger for event
+   tickets), one shared `<CalendarView />` (month/week/day + filter chips),
+   booking drawer with trainer/lesson/ticket options, server-computed
+   prices, `.ics` export, and `cancel_booking()` with a configurable
+   window (`club_settings.cancellation_hours`). Run
+   `supabase/migrations/0002_bookings.sql` after 0001.
 4. Stripe checkout + webhook
 5. News/events feed + newsletter delivery
 6. Live streaming (`StreamProvider` interface)
