@@ -52,10 +52,34 @@ supabase/migrations/  (M2+) SQL migrations
 .github/workflows/    CI
 ```
 
+## Supabase setup (Milestone 2)
+
+Auth and member profiles are code-complete but need a Supabase project:
+
+1. Create a project at [supabase.com](https://supabase.com) (EU region —
+   `eu-central-1` Frankfurt fits the club).
+2. In the project's **SQL editor**, run
+   [`supabase/migrations/0001_profiles.sql`](supabase/migrations/0001_profiles.sql).
+3. Copy **Project URL** and **anon key** (Settings → API) into `.env.local`
+   as `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`; add
+   `SUPABASE_SERVICE_ROLE_KEY` to enable self-service account deletion.
+4. **Sign in with Apple**: Authentication → Providers → Apple. Requires an
+   Apple Developer account (Services ID, key, team ID — see Supabase's
+   Apple provider guide). Email/password works without any of that.
+5. Auth → URL Configuration: set the site URL and add
+   `http://localhost:3000/auth/callback` (plus the production URL) to the
+   redirect allowlist.
+
+Until the env vars exist, `/login` and `/account` show a setup notice and
+the rest of the site works normally. Auth routes: `/login`, `/login/reset`,
+`/account`, `/account/update-password`, `/auth/callback`. `/account` is
+protected by middleware; profiles are RLS-guarded (owner-only, and members
+cannot change their own membership tier — that's service-role only).
+
 ## Roadmap (build milestones)
 
 1. ✅ Repo scaffold, design tokens, `PoloPonyLoader`, app shell/nav
-2. Supabase project + Auth (Apple + email) + account model
+2. ✅ Supabase Auth (Apple + email) + account model + DSGVO self-service
 3. Shared calendar/booking engine across hall, 3 fields, lessons, events
 4. Stripe checkout + webhook
 5. News/events feed + newsletter delivery
